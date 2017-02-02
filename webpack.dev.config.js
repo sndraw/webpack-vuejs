@@ -14,15 +14,14 @@ module.exports = {
     },
     //入口文件输出配置
     output: {
-        path: path.resolve(__dirname, './dist'), // 设置输出目录
-        publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
-        filename: 'js/[name].[hash].js', // 输出文件名
-        chunkFilename: 'js/[name].[hash].js', // 按需加载模块输出文件名
+        path: path.resolve(__dirname, './dev'), // 设置输出目录
+        publicPath: "/", //静态文件目录，如果网站路径直接指到dev目录，请注意改为/
+        filename: 'js/[name].js', // 输出文件名
+        chunkFilename: 'js/[name].js', // 按需加载模块输出文件名
     },
     resolve: {
         root: [],
-        alias: {
-        },
+        alias: {},
         //设置require或import的时候可以不需要带后缀
         extensions: ['', '.js', '.less', '.css']
     },
@@ -80,50 +79,47 @@ module.exports = {
                     name: 'json/[name].[hash:8].[ext]' //输出目录以及名称
                 }
             },
+
         ]
     },
+
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
-                NODE_ENV: JSON.stringify("production")
+                NODE_ENV: JSON.stringify("development")
             }
         }),
-
-//        new webpack.ProvidePlugin({
-//            $: "jquery",
-//            jQuery: "jquery",
-//            "window.jQuery": "jquery"
+//        new CleanWebpackPlugin(['css','js'], {
+//            root: path.resolve(__dirname, './dev'),
+//            verbose: true,
+//            dry: false,
+//            exclude: []
 //        }),
-        new CleanWebpackPlugin(['*'], {
-            root: path.resolve(__dirname, './dist'),
-            verbose: true,
-            dry: false,
-            exclude: []
-        }),
         // 分离css
-        new ExtractTextPlugin('css/[name].[hash].css', {
+        new ExtractTextPlugin('css/[name].css', {
+            //true为全部模块的css都分离，包括按需加载的css，统一根据入口文件打包，false只分离非按需加载模块的css，按需加载模块的css打包入js
             allChunks: true
         }),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: "vendor",
-        //     filename: "js/vendor.[hash].js",
+        //     filename: "js/vendor.js",
         //     async: false
         // }),
         //压缩打包的文件
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                except: ['$super', '$', 'exports', 'require']
-                //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
-            },
-            compress: {
-                //supresses warnings, usually from module minification
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     mangle: {
+        //         except: ['$super', '$', 'exports', 'require']
+        //         //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
+        //     },
+        //     compress: {
+        //         //supresses warnings, usually from module minification
+        //         warnings: false
+        //     }
+        // }),
         //允许错误不打断程序
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({
-            filename: __dirname + '/dist/index.html', //目标文件
+            filename: __dirname + '/dev/index.html', //目标文件
             template: __dirname + '/app/index.html', //模板文件
             favicon: __dirname + '/app/images/favicon.ico',
             inject: 'body',
@@ -135,9 +131,17 @@ module.exports = {
         new TransferWebpackPlugin([
             {from: 'data', to: 'data'}
         ], path.resolve(__dirname, './app'))
-    ]
-};
+    ],
+    devServer: {//服务器
+        historyApiFallback: true,
+        progress: true,
+        port: 8080,
+        proxy: {//接口转发
+            '/api': {
+                target: 'http://localhost', //转发地址
+                pathRewrite: {'^/api': ''}//路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
+            }
+        }
+    }
 
-if (process.env.NODE_ENV === 'github') {
-    module.exports.output.publicPath ="/webpack-react/dist/"; // 设置输出目录
-}
+};

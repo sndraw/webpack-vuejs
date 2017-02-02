@@ -7,15 +7,8 @@
 build（生产，打包目录dist）  
 `npm run build`
 
-#####备注:
->生产环境下，如果网站路径直接指到dist，为防止静态文件无法获取请注意  
->修改  
->publicPath: "/webpack-vuejs/dist/"  
->为  
->publicPath: "/"
-
-watch（生产-观察者模式，打包目录dist）  
-`npm run watch`
+github（生产-github，打包目录dist）  
+`npm run github`
 
 dev（开发，打包目录dev）  
 `npm run dev`

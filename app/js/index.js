@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 import Vue from 'vue';
-import { Button, Select } from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
-import App from './App.vue';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+import App from './../components/App.vue';
 
-Vue.component(Button.name, Button);
-Vue.component(Select.name, Select);
+Vue.use(ElementUI)
+
 /* 或写为
  * Vue.use(Button)
  * Vue.use(Select)

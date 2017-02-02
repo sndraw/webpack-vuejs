@@ -1,18 +1,24 @@
 {
-  "name": "element-starter",
+  "name": "admin-vue-element",
+  "version": "1.0.0",
+  "main": "index.html",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --port 8080",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack",
+    "watch": "cross-env NODE_ENV=production webpack --watch",
+    "github": "cross-env NODE_ENV=github webpack",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.config.js",
+    "hot": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js  --devtool eval --progress --colors  --inline --hot --content-base dev"
   },
-  "repository": "",
-  "license": "",
+  "author": "sn",
+  "license": "ISC",
+  "repository": "npm/npm",
   "dependencies": {
-    "element-ui": "^1.0.0",
-    "vue": "^2.1.6"
+    "element-ui": "^1.1.6",
+    "vue": "^2.1.10"
   },
   "devDependencies": {
     "babel": "^6.5.2",
-    "babel-core": "^6.22.0",
+    "babel-core": "^6.22.1",
     "babel-loader": "^6.0.0",
     "babel-plugin-component": "^0.9.0",
     "babel-plugin-import": "^1.1.0",
@@ -23,8 +29,9 @@
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
     "style-loader": "^0.13.1",
-    "vue-loader": "^9.8.0",
+    "vue-loader": "^10.2.1",
+    "vue-template-compiler": "^2.1.10",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.3"
   }
 }
