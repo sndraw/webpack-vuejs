@@ -2,7 +2,8 @@
 
 ####1.如无node，安装node 
 ####2.进入目录，安装package.json中的依赖包
-`npm install --save-dev`
+`npm install -S`  
+`npm install -D`  
 ####3.根据需要构建项目
 build（生产，打包目录dist）  
 `npm run build`
