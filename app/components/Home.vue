@@ -37,6 +37,7 @@ module.exports={
      }
      .wufu:hover{
         border-color:#FFD700;
+        background-color:red;
      }
      .wufu:hover >a{
         color:#FFD700;
