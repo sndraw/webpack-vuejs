@@ -140,5 +140,5 @@ module.exports = {
 };
 
 if (process.env.NODE_ENV === 'github') {
-    module.exports.output.publicPath ="/webpack-react/dist/"; // 设置输出目录
+    module.exports.output.publicPath ="/webpack-vuejs/dist/"; // 设置输出目录
 }
