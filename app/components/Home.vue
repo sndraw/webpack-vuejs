@@ -1,5 +1,7 @@
 <template>
-    <div class="fu">{{msg}}</div>
+    <div class="wufu">
+        <router-link to="/">{{msg}}</router-link>
+    </div>
 </template>
 
 <script>
@@ -9,13 +11,14 @@ module.exports={
      }
 };
 
+
 </script>
 
 <style>
     html{
        background-color:#CC9966;
     }
-    .fu{
+    .wufu{
        width:100px;
        margin:40px auto 0 auto;
        font-family:"Microsoft YaHei";
@@ -24,8 +27,20 @@ module.exports={
        color:red;
        border:solid 10px red;
     }
+     .wufu >a{
+        color:red;
+        text-decoration: none;
+     }
 
-
+     .wufu >a:visited{
+        color:red;
+     }
+     .wufu:hover{
+        border-color:#FFD700;
+     }
+     .wufu:hover >a{
+        color:#FFD700;
+     }
 
 
 </style>

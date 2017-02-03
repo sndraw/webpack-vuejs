@@ -1,5 +1,7 @@
 <template>
-    <div class="fu">{{msg}}</div>
+    <div class="fu">
+        <router-link to="/home">{{msg}}</router-link>
+    </div>
 </template>
 
 <script>
@@ -26,8 +28,26 @@ module.exports={
        color:red;
        border:solid 10px red;
        border-radius:50%;
+       -webkit-border-radius:50%;
+       -moz-border-radius:50%;
+       transform: rotateX(180deg) rotateY(180deg);
+       -webkit-transform: rotateX(180deg) rotateY(180deg);
+       -moz-transform: rotateX(180deg) rotateY(180deg);
     }
+     .fu >a{
+        color:red;
+        text-decoration: none;
+     }
 
+     .fu >a:visited{
+        color:red;
+     }
+     .fu:hover{
+        border-color:#FFD700;
+     }
+     .fu:hover >a{
+        color:#FFD700;
+     }
 
 
 
