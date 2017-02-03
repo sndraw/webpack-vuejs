@@ -30,9 +30,10 @@ module.exports={
        border-radius:50%;
        -webkit-border-radius:50%;
        -moz-border-radius:50%;
-       transform: rotateX(180deg) rotateY(180deg);
-       -webkit-transform: rotateX(180deg) rotateY(180deg);
-       -moz-transform: rotateX(180deg) rotateY(180deg);
+      transition: transform 0.5s;
+      -moz-transition: -moz-transform 0.5s;	/* Firefox 4 */
+      -webkit-transition: -webkit-transform 0.5s;	/* Safari 和 Chrome */
+      -o-transition: -o-transform 0.5s;	/* Opera */
     }
      .fu >a{
         color:red;
@@ -43,7 +44,11 @@ module.exports={
         color:red;
      }
      .fu:hover{
-        border-color:#FFD700;
+       border-color:#FFD700;
+       transform: rotate(180deg);
+       -webkit-transform: rotate(180deg);
+       -moz-transform: rotate(180deg);
+       -o-transform: rotate(180deg);
      }
      .fu:hover >a{
         color:#FFD700;
