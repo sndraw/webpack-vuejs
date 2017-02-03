@@ -23,7 +23,7 @@ module.exports={
        margin:40px auto 0 auto;
        font-family:"Microsoft YaHei";
        text-align:center;
-       font-size:88px;
+       font-size:66px;
        color:red;
        border:solid 10px red;
     }
