@@ -43,14 +43,14 @@ module.exports={
      .fu >a:visited{
         color:red;
      }
-     .fu:hover{
+     .fu:active{
        border-color:#FFD700;
        transform: rotate(180deg);
        -webkit-transform: rotate(180deg);
        -moz-transform: rotate(180deg);
        -o-transform: rotate(180deg);
      }
-     .fu:hover >a{
+     .fu:active >a{
         color:#FFD700;
      }
 

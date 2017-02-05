@@ -35,11 +35,11 @@ module.exports={
      .wufu >a:visited{
         color:red;
      }
-     .wufu:hover{
+     .wufu:active{
         border-color:#FFD700;
         background-color:red;
      }
-     .wufu:hover >a{
+     .wufu:active >a{
         color:#FFD700;
      }
 
