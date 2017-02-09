@@ -10,9 +10,6 @@ module.exports = {
     //插件项
     //页面入口文件配置
     entry: {
-        vendor: [
-            'jquery'
-        ],
         index: path.resolve(__dirname, './app/js/index.js')
     },
     //入口文件输出配置
@@ -25,10 +22,8 @@ module.exports = {
     resolve: {
         root: [],
         alias: {
-            jquery: 'jquery',
-            'zui-css': path.join(nodeModulesPath, '/zui/dist/css/zui.min.css'),
-           'zui-js': path.join(nodeModulesPath, '/zui/dist/js/zui.min.js'),
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.js',
+            // jquery: 'jquery'
         },
        //设置require或import的时候可以不需要带后缀
         extensions: ['', '.js', '.less', '.css','vue']
@@ -97,11 +92,11 @@ module.exports = {
                 NODE_ENV: JSON.stringify("development")
             }
         }),
-        new webpack.ProvidePlugin({
-           $: "jquery",
-           jQuery: "jquery",
-           "window.jQuery": "jquery"
-        }),
+        // new webpack.ProvidePlugin({
+        //    $: "jquery",
+        //    jQuery: "jquery",
+        //    "window.jQuery": "jquery"
+        // }),
 //        new CleanWebpackPlugin(['css','js'], {
 //            root: path.resolve(__dirname, './dev'),
 //            verbose: true,
@@ -113,11 +108,11 @@ module.exports = {
             //true为全部模块的css都分离，包括按需加载的css，统一根据入口文件打包，false只分离非按需加载模块的css，按需加载模块的css打包入js
             allChunks: true
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "vendor",
-            filename: "js/vendor.js",
-            async: false
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: "vendor",
+        //     filename: "js/vendor.js",
+        //     async: false
+        // }),
         //压缩打包的文件
         // new webpack.optimize.UglifyJsPlugin({
         //     mangle: {
@@ -137,7 +132,7 @@ module.exports = {
             favicon: __dirname + '/app/images/favicon.ico',
             inject: 'body',
             hash: false, //默认为true,代表js、css文件后面会跟一个随机字符串,解决缓存问题
-            chunks: ['vendor','index'],
+            chunks: ['index'],
             chunksSortMode: 'auto'
         }),
         //把指定文件夹下的文件复制到指定的目录
