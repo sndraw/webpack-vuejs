@@ -6,26 +6,84 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CleanWebpackPlugin = require('clean-webpack-plugin'); //清理文件夹
 var nodeModulesPath = path.join(__dirname, 'node_modules');
 
-module.exports = {
-    //插件项
-    //页面入口文件配置
-    entry: {
-        index: path.resolve(__dirname, './app/js/index.js')
-    },
-    //入口文件输出配置
-    output: {
+//webpack配置-根据开发模式可改变配置
+var webpackConfig = {
+    nameHash: ".[hash:8]",
+    output: {//输出文件配置
         path: path.resolve(__dirname, './dist'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
         filename: 'js/[name].[hash].js', // 输出文件名
         chunkFilename: 'js/[name].[hash].js', // 按需加载模块输出文件名
     },
+    plugins: {
+        define: new webpack.DefinePlugin({
+            "process.env": {//上线后的devtool要配置为source-map,有时候为了性能考虑，一定要配置这个插件
+                NODE_ENV: JSON.stringify("production")
+            }
+        }),
+        clean: new CleanWebpackPlugin(['*'], {
+            root: path.resolve(__dirname, './dist'),
+            verbose: true,
+            dry: false,
+            exclude: []
+        }),
+        uglify: new webpack.optimize.UglifyJsPlugin({
+            mangle: {
+                except: ['$super', '$', 'exports', 'require']
+                //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
+            },
+            compress: {
+                //supresses warnings, usually from module minification
+                warnings: false
+            }
+        })
+    }
+};
+//github打包模式
+if (process.env.NODE_ENV === 'github') {
+    webpackConfig.output.publicPath = "/webpack-vuejs/dist/"; // 设置输出目录
+}
+//开发者模式
+if (process.env.NODE_ENV === 'development') {
+    webpackConfig.nameHash="";
+    webpackConfig.output= {//输出文件配置
+        path: path.resolve(__dirname, './dev'), // 设置输出目录
+        publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
+        filename: 'js/[name].js', // 输出文件名
+        chunkFilename: 'js/[name].js', // 按需加载模块输出文件名
+    };
+    webpackConfig.plugins.define = new webpack.DefinePlugin({
+        "process.env": {//上线后的devtool要配置为source-map,有时候为了性能考虑，一定要配置这个插件
+            NODE_ENV: JSON.stringify("development")
+        }
+    });
+    webpackConfig.plugins.clean = function () {
+        console.log('开发模式下，无需清理文件夹');
+    };//清理文件插件
+    webpackConfig.plugins.uglify = function () {
+        console.log('开发模式下，无需压缩文件');
+    };//压缩文件插件
+}
+module.exports = {
+    //页面入口文件配置
+    entry: {
+        // vendor: [
+        //     'jquery'
+        // ],
+        index: path.resolve(__dirname, './app/js/index.js')
+    },
+    //入口文件输出配置
+    output: webpackConfig.output,
     resolve: {
         root: [],
         alias: {
+            // jquery: 'jquery',
+            // 'zui-css': path.join(nodeModulesPath, '/zui/dist/css/zui.min.css'),
+            // 'zui-js': path.join(nodeModulesPath, '/zui/dist/js/zui.min.js'),
             vue: 'vue/dist/vue.js'
         },
         //设置require或import的时候可以不需要带后缀
-        extensions: ['', '.js', '.less', '.css','vue']
+        extensions: ['', '.js', '.less', '.css', 'vue']
     },
     module: {
         //加载器配置
@@ -63,13 +121,13 @@ module.exports = {
                 loader: 'url-loader',
                 query: {
                     limit: 10240, //10kb 图片转base64。设置图片大小，小于此数则转换。
-                    name: 'images/[name].[hash:8].[ext]' //输出目录以及名称
+                    name: 'images/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             }, {
                 test: /\.(woff|woff2|svg|eot|ttf)\??.*$/,
                 loader: 'file',
                 query: {
-                    name: 'fonts/[name].[hash:8].[ext]' //输出目录以及名称
+                    name: 'fonts/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             }, {
                 test: /\.(htm|html)$/i,
@@ -78,53 +136,33 @@ module.exports = {
                 test: /\.json$/,
                 loader: 'json-loader',
                 query: {
-                    name: 'json/[name].[hash:8].[ext]' //输出目录以及名称
+                    name: 'json/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             },
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            }
-        }),
-
-//        new webpack.ProvidePlugin({
-//            $: "jquery",
-//            jQuery: "jquery",
-//            "window.jQuery": "jquery"
-//        }),
-        new CleanWebpackPlugin(['*'], {
-            root: path.resolve(__dirname, './dist'),
-            verbose: true,
-            dry: false,
-            exclude: []
-        }),
+        webpackConfig.plugins.define,//全局变量
+        // new webpack.ProvidePlugin({
+        //     $: "jquery",
+        //     jQuery: "jquery",
+        //     "window.jQuery": "jquery"
+        // }),
+        webpackConfig.plugins.clean,//清理文件
         // 分离css
-        new ExtractTextPlugin('css/[name].[hash].css', {
+        new ExtractTextPlugin('css/[name]' + webpackConfig.nameHash + '.css', {
             allChunks: true
         }),
         // new webpack.optimize.CommonsChunkPlugin({
-        //     name: "vendor",
-        //     filename: "js/vendor.[hash].js",
-        //     async: false
+        //         name: "vendor",
+        //         filename: 'js/vendor' + webpackConfig.nameHash + '.js',
+        //         async: false
         // }),
-        //压缩打包的文件
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                except: ['$super', '$', 'exports', 'require']
-                //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
-            },
-            compress: {
-                //supresses warnings, usually from module minification
-                warnings: false
-            }
-        }),
+        webpackConfig.plugins.uglify, //压缩打包的文件
         //允许错误不打断程序
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({
-            filename: __dirname + '/dist/index.html', //目标文件
+            filename: webpackConfig.output.path + '/index.html', //目标文件
             template: __dirname + '/app/index.html', //模板文件
             favicon: __dirname + '/app/images/favicon.ico',
             inject: 'body',
@@ -136,9 +174,16 @@ module.exports = {
         new TransferWebpackPlugin([
             {from: 'data', to: 'data'}
         ], path.resolve(__dirname, './app'))
-    ]
+    ],
+    devServer: {//服务器
+        historyApiFallback: true,
+        progress: true,
+        port: 8080,
+        proxy: {//接口转发
+            '/api': {
+                target: 'http://localhost', //转发地址
+                pathRewrite: {'^/api': ''}//路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
+            }
+        }
+    }
 };
-
-if (process.env.NODE_ENV === 'github') {
-    module.exports.output.publicPath ="/webpack-vuejs/dist/"; // 设置输出目录
-}
