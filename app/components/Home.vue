@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 module.exports={
      data:function(){
        return  { msg:"五福临门"};
@@ -14,7 +14,7 @@ module.exports={
 
 </script>
 
-<style>
+<style scoped lang='scss' rel="stylesheet/scss" type="text/css">
     html{
     }
     .wufu{

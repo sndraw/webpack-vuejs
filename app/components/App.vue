@@ -5,32 +5,29 @@
     </div>
 </template>
 
-<script>
-module.exports={
-     data:function(){
-       return  { msg:"福"};
-     },
-       // 在 `methods` 对象中定义方法
-  methods: {
-    greet: function (event) {
-    require.ensure(['zui-css', 'zui-js'], function (require) {
-    require('zui-css');
-    require('zui-js');
-    new $.zui.Messager('新年大吉', {
-        icon: 'bell' // 定义消息图标
-    }).show();
-   }, 'zui');
-    }
-  }
-};
-
+<script type="text/ecmascript-6">
+    module.exports = {
+        data: function () {
+            return {msg: "福"};
+        },
+        // 在 `methods` 对象中定义方法
+        methods: {
+            greet: function (event) {
+                require.ensure(['zui-css', 'zui-js'], function (require) {
+                    require('zui-css');
+                    require('zui-js');
+                    new $.zui.Messager('新年大吉', {
+                        icon: 'bell' // 定义消息图标
+                    }).show();
+                }, 'zui');
+            }
+        }
+    };
 
 
 </script>
 
-<style>
-    html{
-    }
+<style scoped lang='scss' rel="stylesheet/scss" type="text/css">
     .fu{
        width:200px;
        height:200px;
@@ -67,9 +64,5 @@ module.exports={
      .fu:active >a{
         color:#FFD700;
      }
-
-
-
-
 
 </style>
