@@ -1,6 +1,7 @@
 <template>
-    <div class="fu">
-        <router-link to="/home">{{msg}}</router-link>
+    <div class="fu" v-on:click="greet">
+        {{msg}}
+        <!--<router-link to="/home" >{{msg}}</router-link>-->
     </div>
 </template>
 
@@ -8,14 +9,27 @@
 module.exports={
      data:function(){
        return  { msg:"福"};
-     }
+     },
+       // 在 `methods` 对象中定义方法
+  methods: {
+    greet: function (event) {
+    require.ensure(['zui-css', 'zui-js'], function (require) {
+    require('zui-css');
+    require('zui-js');
+    new $.zui.Messager('新年大吉', {
+        icon: 'bell' // 定义消息图标
+    }).show();
+   }, 'zui');
+    }
+  }
 };
+
+
 
 </script>
 
 <style>
     html{
-       background-color:#CC9966;
     }
     .fu{
        width:200px;
@@ -53,6 +67,8 @@ module.exports={
      .fu:active >a{
         color:#FFD700;
      }
+
+
 
 
 

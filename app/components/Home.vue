@@ -16,7 +16,6 @@ module.exports={
 
 <style>
     html{
-       background-color:#CC9966;
     }
     .wufu{
        width:100px;

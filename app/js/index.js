@@ -5,7 +5,6 @@
  */
 import Vue from 'vue';
 import router from './routers';
-
 const app = new Vue({
     router
 }).$mount('#app');
