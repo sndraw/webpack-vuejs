@@ -10,6 +10,9 @@ module.exports = {
     //插件项
     //页面入口文件配置
     entry: {
+        vendor: [
+            'jquery'
+        ],
         index: path.resolve(__dirname, './app/js/index.js')
     },
     //入口文件输出配置
@@ -22,6 +25,9 @@ module.exports = {
     resolve: {
         root: [],
         alias: {
+            jquery: 'jquery',
+            'zui-css': path.join(nodeModulesPath, '/zui/dist/css/zui.min.css'),
+            'zui-js': path.join(nodeModulesPath, '/zui/dist/js/zui.min.js'),
             vue: 'vue/dist/vue.js'
         },
         //设置require或import的时候可以不需要带后缀
@@ -90,11 +96,11 @@ module.exports = {
             }
         }),
 
-//        new webpack.ProvidePlugin({
-//            $: "jquery",
-//            jQuery: "jquery",
-//            "window.jQuery": "jquery"
-//        }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
         new CleanWebpackPlugin(['*'], {
             root: path.resolve(__dirname, './dist'),
             verbose: true,
@@ -105,11 +111,11 @@ module.exports = {
         new ExtractTextPlugin('css/[name].[hash].css', {
             allChunks: true
         }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: "vendor",
-        //     filename: "js/vendor.[hash].js",
-        //     async: false
-        // }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            filename: "js/vendor.[hash].js",
+            async: false
+        }),
         //压缩打包的文件
         new webpack.optimize.UglifyJsPlugin({
             mangle: {
@@ -129,7 +135,7 @@ module.exports = {
             favicon: __dirname + '/app/images/favicon.ico',
             inject: 'body',
             hash: false, //默认为true,代表js、css文件后面会跟一个随机字符串,解决缓存问题
-            chunks: ['index'],
+            chunks: ['vendor','index'],
             chunksSortMode: 'auto'
         }),
         //把指定文件夹下的文件复制到指定的目录
