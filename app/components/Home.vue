@@ -14,9 +14,7 @@ module.exports={
 
 </script>
 
-<style scoped lang='scss' rel="stylesheet/scss" type="text/css">
-    html{
-    }
+<style scoped lang='sass' rel="stylesheet/scss" type="text/css">
     .wufu{
        width:100px;
        margin:40px auto 0 auto;

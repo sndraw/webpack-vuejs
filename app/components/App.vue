@@ -27,7 +27,7 @@
 
 </script>
 
-<style scoped lang='scss' rel="stylesheet/scss" type="text/css">
+<style scoped lang='sass' rel="stylesheet/scss" type="text/css">
     .fu{
        width:200px;
        height:200px;
