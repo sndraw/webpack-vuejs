@@ -6,8 +6,8 @@
     "build": "cross-env NODE_ENV=production webpack",
     "watch": "cross-env NODE_ENV=production webpack --watch",
     "github": "cross-env NODE_ENV=github webpack",
-    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.config.js",
-    "hot": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js  --devtool eval --progress --colors  --inline --hot --content-base dev"
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.config.js  --devtool source-map  --content-base dev",
+    "hot": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js  --devtool source-map  --progress --colors  --inline --hot --content-base dev"
   },
   "author": "sn",
   "license": "ISC",
