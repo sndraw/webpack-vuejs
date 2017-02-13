@@ -45,8 +45,8 @@ if (process.env.NODE_ENV === 'github') {
 }
 //开发者模式
 if (process.env.NODE_ENV === 'development') {
-    webpackConfig.nameHash="";
-    webpackConfig.output= {//输出文件配置
+    webpackConfig.nameHash = "";
+    webpackConfig.output = {//输出文件配置
         path: path.resolve(__dirname, './dev'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
         filename: 'js/[name].js', // 输出文件名
@@ -83,7 +83,7 @@ module.exports = {
             vue: 'vue/dist/vue.js'
         },
         //设置require或import的时候可以不需要带后缀
-        extensions: ['', '.js', '.less', '.css', 'vue']
+        extensions: ['','.js', '.less', '.css', '.vue']
     },
     module: {
         //加载器配置
@@ -95,20 +95,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'stage-0'],
-                    plugins: [
-                        [
-                            "component", [
-                            {
-                                "libraryName": "element-ui",
-                                "styleLibraryName": "theme-default"
-                            }
-                        ]
-                        ]
-                    ]
-                }
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,

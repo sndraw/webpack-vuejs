@@ -1,35 +1,42 @@
 <template>
-    <el-row :gutter="20">
-        <el-dialog v-model="visible" title="贺词">
-            <div class="fu">{{msg}}</div>
-        </el-dialog>
-        <el-menu default-active="1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1">
-                <router-link to="/home">{{linker}}</router-link>
-            </el-menu-item>
-            <el-submenu index="2">
-                <template slot="title">祝福</template>
-                <el-menu-item index="2-1">{{say}}</el-menu-item>
-            </el-submenu>
-        </el-menu>
-    </el-row>
+    <div>
+        <div v-on:click="onToast">提示</div>
+        <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import {Toast} from "mint-ui";
     module.exports = {
         data: function () {
             return {
-                msg: "福",
-                linker: "五福临门",
-                say: "恭喜发财",
-                visible: false
+                slots: [
+                    {
+                        flex: 1,
+                        values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+                        className: 'slot1',
+                        textAlign: 'right'
+                    }, {
+                        divider: true,
+                        content: '-',
+                        className: 'slot2'
+                    }, {
+                        flex: 1,
+                        values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+                        className: 'slot3',
+                        textAlign: 'left'
+                    }
+                ]
             };
         },
         // 在 `methods` 对象中定义方法
         methods: {
-            handleSelect(key, keyPath) {
-                if (key == "2-1") {
-                    this.visible = true;
+            onToast: function () {
+                Toast("123");
+            },
+            onValuesChange: function (picker, values) {
+                if (values[0] > values[1]) {
+                    picker.setSlotValue(1, values[0]);
                 }
             }
         }
@@ -68,7 +75,6 @@
     }
 
     .fu:active {
-        color: #FFD700;
         border-color: #FFD700;
         transform: rotate(180deg);
         -webkit-transform: rotate(180deg);
