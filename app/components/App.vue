@@ -28,6 +28,9 @@
         // 在 `methods` 对象中定义方法
         methods: {
             handleSelect(key, keyPath) {
+                this.$http.post('data/menus.json').then(function (response) {
+                    console.log(response);
+                });
                 if (key == "2-1") {
                     this.visible = true;
                 }
