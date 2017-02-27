@@ -176,9 +176,10 @@ module.exports = {
             '/api': {
                 target: 'http://localhost:8081', //转发地址
                 changeOrigin: true,
+                //路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
                 pathRewrite: {
                     '^/api/(.*)\.json$': '/webfront/$1'
-                }//路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
+                }
             }
         }
     }

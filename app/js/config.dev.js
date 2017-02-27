@@ -6,7 +6,7 @@ const Config = {
     vue: {
         devtools: false
     },
-    apiUrl: "/api",
+    apiUrl: "/data",
     urlsEnum: {
         rank: '/rank.json'
     }
