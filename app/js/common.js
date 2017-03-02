@@ -1,5 +1,5 @@
 /**
- * vue配置
+ * 公用方法
  * Created by sn on 2017/2/26.
  */
 const Common = {
