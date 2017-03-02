@@ -2,14 +2,14 @@ var webpack = require('webpack');
 var path = require('path');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CleanWebpackPlugin = require('clean-webpack-plugin'); //清理文件夹
 var nodeModulesPath = path.join(__dirname, 'node_modules');
 
 //webpack配置-根据开发模式可改变配置
 var webpackConfig = {
-    nameHash: ".[hash:8]",
-    config: path.resolve(__dirname, "./app/js/config.js"),//配置文件
+    nameHash: ".[hash:8]",//hash规则
+    config:path.resolve(__dirname,"./app/js/config.js"),//配置文件
     output: {//输出文件配置
         path: path.resolve(__dirname, './dist'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
@@ -42,13 +42,14 @@ var webpackConfig = {
 };
 //github打包模式
 if (process.env.NODE_ENV === 'github') {
+    process.env.NODE_ENV = 'production';
     webpackConfig.output.publicPath = "/webpack-vuejs/dist/"; // 设置输出目录
 }
 //开发者模式
 if (process.env.NODE_ENV === 'development') {
-    webpackConfig.nameHash = "";
-    webpackConfig.config = path.resolve(__dirname, "./app/js/config.dev.js");
-    webpackConfig.output = {//输出文件配置
+        webpackConfig.nameHash = "";
+        webpackConfig.config=path.resolve(__dirname,"./app/js/config.dev.js");
+        webpackConfig.output = {//输出文件配置
         path: path.resolve(__dirname, './dev'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
         filename: 'js/[name].js', // 输出文件名
@@ -72,7 +73,7 @@ module.exports = {
         // vendor: [
         //     'jquery'
         // ],
-        index: path.resolve(__dirname, './app/js/index.js')
+        main: path.resolve(__dirname, './app/main.js')
     },
     //入口文件输出配置
     output: webpackConfig.output,
@@ -82,11 +83,11 @@ module.exports = {
             // jquery: 'jquery',
             // 'zui-css': path.join(nodeModulesPath, '/zui/dist/css/zui.min.css'),
             // 'zui-js': path.join(nodeModulesPath, '/zui/dist/js/zui.min.js'),
-            config: webpackConfig.config,//配置文件
+            config:webpackConfig.config,//配置文件
             vue: 'vue/dist/vue.js'
         },
         //设置require或import的时候可以不需要带后缀
-        extensions: ['', '.js', '.less', '.css', '.vue']
+        extensions: ['','.js', '.less', '.css', '.vue']
     },
     module: {
         //加载器配置
@@ -134,13 +135,8 @@ module.exports = {
     plugins: [
         webpackConfig.plugins.define,//全局变量
         // new webpack.ProvidePlugin({
-        //     $: "jquery",
-        //     jQuery: "jquery",
-        //     "window.jQuery": "jquery"
+        //     Config:'config'
         // }),
-        new webpack.ProvidePlugin({
-            Config: 'config'
-        }),
         webpackConfig.plugins.clean,//清理文件
         // 分离css
         new ExtractTextPlugin('css/[name]' + webpackConfig.nameHash + '.css', {
@@ -160,7 +156,7 @@ module.exports = {
             favicon: __dirname + '/app/images/favicon.ico',
             inject: 'body',
             hash: false, //默认为true,代表js、css文件后面会跟一个随机字符串,解决缓存问题
-            chunks: ['index'],
+            chunks: ['main'],
             chunksSortMode: 'auto'
         }),
         //把指定文件夹下的文件复制到指定的目录
@@ -172,14 +168,15 @@ module.exports = {
         historyApiFallback: true,
         progress: true,
         port: 8080,
+        headers: {
+        },
         proxy: {//接口转发
             '/api': {
                 target: 'http://localhost:8081', //转发地址
                 changeOrigin: true,
-                //路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
                 pathRewrite: {
-                    '^/api/(.*)\.json$': '/webfront/$1'
-                }
+                    '^/api/(.*)\.json$':'/page/$1'
+                }//路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
             }
         }
     }

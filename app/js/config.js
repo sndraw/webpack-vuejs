@@ -6,9 +6,9 @@ const Config = {
     vue: {
         devtools: false
     },
-    apiUrl: ('https:' == document.location.protocol ? 'https:' : 'http:') + "//www.github.com",
+    apiUrl: "http://element.eleme.io",
     urlsEnum: {
-        rank: '/webfront/rank'
+        rank: '/rank'
     }
 };
 module.exports = Config;

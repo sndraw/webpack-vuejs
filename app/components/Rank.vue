@@ -27,10 +27,11 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import  Config from 'config';
     export  default{
         data(){
             return {
-                title:'前端实力排行榜',
+                title:'公司部门排行榜',
                 list:[]
             };
         },

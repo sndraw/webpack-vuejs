@@ -27,6 +27,16 @@ const Common = {
             }
         }
         return c;
+    },
+    countObj: function (o) {
+        var count = 0;
+        for (var i in o) {
+           if(o.hasOwnProperty(i)){
+               count++;
+           }
+        }
+        return count;
     }
+
 };
 export default Common;
