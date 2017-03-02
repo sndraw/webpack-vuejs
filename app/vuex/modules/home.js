@@ -28,18 +28,11 @@ const getters = {
 const actions = {
     getPages ({dispatch}, pages) {
         dispatch(types.GET_PAGES, pages)
-    },
-    showPage ({dispatch}, show) {
-        dispatch(types.SHOW_PAGE, show)
     }
 };
 const mutations = {
     [types.GET_PAGES] (state, pages) {
         state.pages = pages;
-    },
-    [types.SHOW_PAGE] (state, show) {
-        state.show = show;
-        state.page = state.pages[show];
     }
 };
 
