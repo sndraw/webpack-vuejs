@@ -28,6 +28,7 @@ const Common = {
         }
         return c;
     },
+    // 获取对象长度
     countObj: function (o) {
         var count = 0;
         for (var i in o) {
