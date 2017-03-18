@@ -17,6 +17,11 @@ dev（开发，打包目录dev）
 hot（开发-热模块替换，打包目录dev）  
 `npm run hot`
 
+##### 访问路径：
+>http://localhost:8080/webpack-dev-server/  
+>或者  
+>http://localhost:8080
+
 ####4.mock 模拟
 
 #####开发模式
@@ -51,9 +56,4 @@ const Config = {
 };
 module.exports = Config;
 ```
-
-##### 访问路径：
->http://localhost:8080/webpack-dev-server/  
->或者  
->http://localhost:8080
 
