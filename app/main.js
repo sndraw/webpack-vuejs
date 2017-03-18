@@ -20,7 +20,8 @@ Vue.use(VueResource);
 Vue.use(Vuex);
 
 //Vue全局配置
-Common.deepClone(Config.vue, Vue.config);    //解决跨域问题
+Common.deepClone(Config.vue, Vue.config);
+//解决跨域问题
 Vue.http.options.xhr = {withCredentials: true};
 const app = new Vue({
     router,
