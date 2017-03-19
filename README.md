@@ -1,15 +1,12 @@
-#webpack使用说明
+# webpack使用说明
 
-####1.如无node，安装node 
-####2.进入目录，安装package.json中的依赖包
+#### 1.如无node，安装node 
+#### 2.进入目录，安装package.json中的依赖包
 `npm install -S`  
 `npm install -D`  
-####3.根据需要构建项目
+#### 3.根据需要构建项目
 build（生产，打包目录dist）  
 `npm run build`
-
-github（生产-github，打包目录dist）  
-`npm run github`
 
 dev（开发，打包目录dev）  
 `npm run dev`
@@ -17,14 +14,15 @@ dev（开发，打包目录dev）
 hot（开发-热模块替换，打包目录dev）  
 `npm run hot`
 
+
 ##### 访问路径：
 >http://localhost:8080/webpack-dev-server/  
 >或者  
 >http://localhost:8080
 
-####4.mock 模拟
+#### 4.mock 模拟
 
-#####开发模式
+##### 开发模式
 >自动引入config.dev.js
 ```
 const Config = {
@@ -41,7 +39,7 @@ const Config = {
 module.exports = Config;
 ```
 
-#####生产模式
+##### 生产模式
 >自动引入config.js
 ```
 const Config = {
@@ -56,4 +54,3 @@ const Config = {
 };
 module.exports = Config;
 ```
-
