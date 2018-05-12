@@ -5,11 +5,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CleanWebpackPlugin = require('clean-webpack-plugin'); //清理文件夹
 var nodeModulesPath = path.join(__dirname, 'node_modules');
+var { VueLoaderPlugin } = require('vue-loader');
+const vueLoaderConfig = require('./app/js/vue-loader.conf')
 
 //webpack配置-根据开发模式可改变配置
 var webpackConfig = {
     nameHash: ".[hash:8]",//hash规则
-    config:path.resolve(__dirname,"./app/js/config.js"),//配置文件
+    config: path.resolve(__dirname, "./app/js/config.js"),//配置文件
     output: {//输出文件配置
         path: path.resolve(__dirname, './dist'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
@@ -47,9 +49,9 @@ if (process.env.NODE_ENV === 'github') {
 }
 //开发者模式
 if (process.env.NODE_ENV === 'development') {
-        webpackConfig.nameHash = "";
-        webpackConfig.config=path.resolve(__dirname,"./app/js/config.dev.js");
-        webpackConfig.output = {//输出文件配置
+    webpackConfig.nameHash = "";
+    webpackConfig.config = path.resolve(__dirname, "./app/js/config.dev.js");
+    webpackConfig.output = {//输出文件配置
         path: path.resolve(__dirname, './dev'), // 设置输出目录
         publicPath: "/", //静态文件目录，如果网站路径直接指到dist目录，请注意改为/
         filename: 'js/[name].js', // 输出文件名
@@ -78,46 +80,67 @@ module.exports = {
     //入口文件输出配置
     output: webpackConfig.output,
     resolve: {
-        root: [],
         alias: {
-            // jquery: 'jquery',
-            // 'zui-css': path.join(nodeModulesPath, '/zui/dist/css/zui.min.css'),
-            // 'zui-js': path.join(nodeModulesPath, '/zui/dist/js/zui.min.js'),
-            config:webpackConfig.config,//配置文件
-            vue: 'vue/dist/vue.js'
+            config: webpackConfig.config,//配置文件
+            vue: 'vue/dist/vue.esm.js',
         },
         //设置require或import的时候可以不需要带后缀
-        extensions: ['','.js', '.less', '.css', '.vue']
+        extensions: ['.js', '.less', '.css', '.scss','.vue']
     },
     module: {
         //加载器配置
-        loaders: [
+        rules: [
             {
                 test: /\.vue$/,
-                loader: "vue"
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        css: ExtractTextPlugin.extract({
+                            use: ['css-loader'],
+                            fallback: 'vue-style-loader' // <- 这是vue-loader的依赖，所以如果使用npm3，则不需要显式安装
+                        }),
+                        sass: ExtractTextPlugin.extract({
+                            use: ['css-loader', 'sass-loader'],
+                            fallback: 'vue-style-loader' // <- 这是vue-loader的依赖，所以如果使用npm3，则不需要显式安装
+                        }),
+                        scss: ExtractTextPlugin.extract({
+                            use: ['css-loader', 'sass-loader'],
+                            fallback: 'vue-style-loader' // <- 这是vue-loader的依赖，所以如果使用npm3，则不需要显式安装
+                        }),
+                        js: 'babel-loader!eslint-loader'
+                    },
+                    indentedSyntax: true
+                }
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
-                exclude: /node_modules/
+                loader: 'babel-loader',
             },
+            // {
+            //     test: /\.css$/,
+            //     use: ExtractTextPlugin.extract({
+            //         fallback: 'style-loader',
+            //         use: ['css-loader']
+            //     })
+            // }, {
+            //     test: /\.scss$/,
+            //     use: ExtractTextPlugin.extract({
+            //         fallback: 'style-loader',
+            //         //resolve-url-loader may be chained before sass-loader if necessary
+            //         use: ['css-loader', 'sass-loader']
+            //     })
+            // },
             {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style', 'css')
-            }, {
-                test: /\.scss/,
-                loader: ExtractTextPlugin.extract('style', 'css!sass')
-            }, {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader',
-                query: {
+                options: {
                     limit: 10240, //10kb 图片转base64。设置图片大小，小于此数则转换。
                     name: 'images/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             }, {
                 test: /\.(woff|woff2|svg|eot|ttf)\??.*$/,
-                loader: 'file',
-                query: {
+                loader: 'file-loader',
+                options: {
                     name: 'fonts/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             }, {
@@ -126,20 +149,25 @@ module.exports = {
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
-                query: {
+                options: {
                     name: 'json/[name]' + webpackConfig.nameHash + '.[ext]' //输出目录以及名称
                 }
             },
         ]
     },
     plugins: [
+        new VueLoaderPlugin(),
+
         webpackConfig.plugins.define,//全局变量
         // new webpack.ProvidePlugin({
         //     Config:'config'
         // }),
         webpackConfig.plugins.clean,//清理文件
         // 分离css
-        new ExtractTextPlugin('css/[name]' + webpackConfig.nameHash + '.css', {
+        new ExtractTextPlugin({
+            filename:  (getPath) => {
+                return getPath('css/[name]' + webpackConfig.nameHash + '.css').replace('css/js', 'css');
+            },
             allChunks: true
         }),
         // new webpack.optimize.CommonsChunkPlugin({
@@ -168,16 +196,16 @@ module.exports = {
         historyApiFallback: true,
         progress: true,
         port: 8080,
-        headers: {
-        },
+        headers: {},
         proxy: {//接口转发
             '/api': {
                 target: 'http://localhost:8081', //转发地址
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api/(.*)\.json$':'/page/$1'
+                    '^/api/(.*)\.json$': '/page/$1'
                 }//路由重写，与target组装成新的地址,如“/api/getlogo”转发到“http://localhost/getlogo”
             }
-        }
+        },
+        contentBase: process.env.NODE_ENV == 'development' ? 'dev' : 'dist'
     }
 };

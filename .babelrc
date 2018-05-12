@@ -1,21 +1,21 @@
 {
   "presets": [
-    "es2015",
-    "stage-0"
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+      }
+    }],
+    "stage-2"
   ],
+  "env": {
+    "test": {
+      "presets": ["env", "stage-2"],
+      "plugins": ["transform-vue-jsx", "transform-es2015-modules-commonjs", "dynamic-import-node"]
+    }
+  },
   "plugins": [
-    [
-      "component",
-      [
-        {
-          "libraryName": "element-ui",
-          "styleLibraryName": "theme-default"
-        },
-        {
-          "libraryName": "mint-ui",
-          "style": true
-        }
-      ]
-    ]
+    "transform-vue-jsx",
+    "transform-runtime"
   ]
 }

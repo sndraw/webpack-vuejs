@@ -4,7 +4,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
+import 'element-ui/lib/theme-chalk/index.css';
 import './../css/main.scss';
 const App=resolve => require(['./../components/App.vue'], resolve)
 const NotFound=resolve => require(['./../components/NotFound.vue'], resolve)
